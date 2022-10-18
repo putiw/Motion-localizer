@@ -4,6 +4,7 @@ githubDir = '/Users/pw1246/Documents/GitHub';
 user = 'puti';
 projectName = 'Localizer';
 addpath(genpath(fullfile(githubDir, 'wpToolbox')));
+addpath(genpath(fullfile(pwd, 'helper')));
 setup_user(user,projectName,bidsDir,githubDir);
 roilabels = {'hMT';'MST';}
 rng    = [0 2]

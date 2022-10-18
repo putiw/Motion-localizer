@@ -3,7 +3,7 @@ addpath(genpath(pwd));
 user = 'puti';
 projectName = 'Localizer';
 bidsDir = '/Users/pw1246/mnt/CBIUserData/rokerslab/CueIntegration';
-bidsDir = '/Users/pw1246/Desktop/MRI/CueIntegration';
+%bidsDir = '/Users/pw1246/Desktop/MRI/CueIntegration';
 serverDir = '/Volumes/Vision/MRI/Decoding';
 githubDir = '/Users/pw1246/Documents/GitHub';
 codeDir = pwd;
@@ -13,7 +13,7 @@ setup_user(user,projectName,bidsDir,githubDir);
 subj = 'sub-0201';
 ses = 'ses-01';
 space = 'fsnative';
-run = 2;
+run = 1;
 % load data
 tic
 datafiles = load_data(bidsDir,'mt',space,'.mgh',subj,ses,run) ;
@@ -129,7 +129,7 @@ figure(2); clf
 betas = myresults.modelmd{2};
 
 motion = nanmean(betas(:,[3]),2);
-stationary = nanmean(betas(:,[5]),2);
+stationary = nanmean(betas(:,[4]),2);
 
 C = [1 -1]'
 contrast = C' * [motion stationary]';

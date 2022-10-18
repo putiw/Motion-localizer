@@ -1,0 +1,161 @@
+
+tmp = zscore(datafiles{1,1}')';
+load('roi.mat');
+
+%%
+close all
+figure(2); clf
+subplot(4,1,1)
+hold on
+for TR = 1:300
+betas = tmp(roi.hmtL,TR);
+plot(TR*ones(size(betas)),betas,'.','Color',[0.5 0.5 0.5])
+plot(TR,mean(betas),'r.','markersize',20)
+ylim([-3 3])
+xlim([1 300])
+drawnow
+end
+plot(1:300,mean(tmp(roi.hmtL,:)),'r-','linewidth',2)
+plot([24:24:300;24:24:300],[-3 3],'linewidth',2,'Color',[0 0 0])
+
+subplot(4,1,2)
+hold on
+for TR = 1:300
+betas = tmp(roi.hmtR,TR);
+plot(TR*ones(size(betas)),betas,'.','Color',[0.5 0.5 0.5])
+plot(TR,mean(betas),'r.','markersize',20)
+ylim([-3 3])
+xlim([1 300])
+drawnow
+end
+plot(1:300,mean(tmp(roi.hmtR,:)),'r-','linewidth',2)
+plot([24:24:300;24:24:300],[-3 3],'linewidth',2,'Color',[0 0 0])
+
+subplot(4,1,3)
+hold on
+for TR = 1:300
+betas = tmp(roi.mstL,TR);
+plot(TR*ones(size(betas)),betas,'.','Color',[0.5 0.5 0.5])
+plot(TR,mean(betas),'r.','markersize',20)
+ylim([-3 3])
+xlim([1 300])
+drawnow
+end
+plot(1:300,mean(tmp(roi.mstL,:)),'r-','linewidth',2)
+plot([24:24:300;24:24:300],[-3 3],'linewidth',2,'Color',[0 0 0])
+
+subplot(4,1,4)
+hold on
+for TR = 1:300
+betas = tmp(roi.mstR,TR);
+plot(TR*ones(size(betas)),betas,'.','Color',[0.5 0.5 0.5])
+plot(TR,mean(betas),'r.','markersize',20)
+ylim([-3 3])
+xlim([1 300])
+drawnow
+end
+plot(1:300,mean(tmp(roi.mstR,:)),'r-','linewidth',2)
+plot([24:24:300;24:24:300],[-3 3],'linewidth',2,'Color',[0 0 0])
+
+%% average
+
+
+close all
+figure(2); clf
+subplot(4,1,1)
+hold on
+betas = tmp(roi.hmtL,TR);
+plot(TR*ones(size(betas)),betas,'.','Color',[0.5 0.5 0.5])
+plot(TR,mean(betas),'r.','markersize',20)
+ylim([-3 3])
+xlim([1 72])
+
+
+plot(1:300,mean(tmp(roi.hmtL,:)),'r-','linewidth',2)
+plot([24:24:300;24:24:300],[-3 3],'linewidth',2,'Color',[0 0 0])
+
+subplot(4,1,2)
+hold on
+for TR = 1:300
+betas = tmp(roi.hmtR,TR);
+plot(TR*ones(size(betas)),betas,'.','Color',[0.5 0.5 0.5])
+plot(TR,mean(betas),'r.','markersize',20)
+ylim([-3 3])
+xlim([1 300])
+drawnow
+end
+plot(1:300,mean(tmp(roi.hmtR,:)),'r-','linewidth',2)
+plot([24:24:300;24:24:300],[-3 3],'linewidth',2,'Color',[0 0 0])
+
+subplot(4,1,3)
+hold on
+for TR = 1:300
+betas = tmp(roi.mstL,TR);
+plot(TR*ones(size(betas)),betas,'.','Color',[0.5 0.5 0.5])
+plot(TR,mean(betas),'r.','markersize',20)
+ylim([-3 3])
+xlim([1 300])
+drawnow
+end
+plot(1:300,mean(tmp(roi.mstL,:)),'r-','linewidth',2)
+plot([24:24:300;24:24:300],[-3 3],'linewidth',2,'Color',[0 0 0])
+
+subplot(4,1,4)
+hold on
+for TR = 1:300
+betas = tmp(roi.mstR,TR);
+plot(TR*ones(size(betas)),betas,'.','Color',[0.5 0.5 0.5])
+plot(TR,mean(betas),'r.','markersize',20)
+ylim([-3 3])
+xlim([1 300])
+drawnow
+end
+plot(1:300,mean(tmp(roi.mstR,:)),'r-','linewidth',2)
+plot([24:24:300;24:24:300],[-3 3],'linewidth',2,'Color',[0 0 0])
+
+
+
+
+
+
+%%
+figure(2); clf
+
+for TR = 72:120
+betas = tmp(:,TR);
+
+betas(betas==0) = -50;
+betas(isnan(betas)) = -50;
+
+
+
+bins = -3:0.01:3
+cmap0 = cmaplookup(bins,min(bins),max(bins),[],(cmapsign4));
+[rawimg,Lookup,rgbimg] = cvnlookup(subj,1,betas,[min(bins) max(bins)],cmap0,min(bins),[],0,{'roiname',{'MT_exvivo'},'roicolor',{'w'},'drawrpoinames',0,'roiwidth',{5},'fontsize',20});
+
+color = [0.5];
+[r,c,t] = size(rgbimg);
+[i j] = find(all(rgbimg == repmat(color,r,c,3),3));
+
+for ii = 1: length(i)
+    rgbimg(i(ii),j(ii),:) = ones(1,3);
+end
+
+a = imagesc(rgbimg); axis image tight;
+
+    
+set(gcf,'Position',[ 277         119        1141         898])
+axis off
+hold on
+% subplot(2,1,2)
+plot(0,0);
+colormap(cmap0);
+hcb=colorbar('SouthOutside');
+hcb.Ticks = [0 1];
+hcb.TickLabels = {'-0.5';'0.5'}
+hcb.FontSize = 25
+hcb.Label.String = ['Moving dots vs. stationary (' num2str(TR) ' TR)']
+hcb.TickLength = 0.001;
+drawnow
+
+end

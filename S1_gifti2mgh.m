@@ -1,6 +1,6 @@
 bidsDir = '/Users/pw1246/Desktop/MRI/CueIntegration';
 bidsDir = '/Users/pw1246/mnt/CBIUserData/rokerslab/CueIntegration';
-
+addpath(genpath(pwd));
 datadir = [bidsDir '/derivatives/fmriprep'];
 subjects = dir(sprintf('%s/sub*',datadir));
 subjects = subjects([subjects.isdir]);
